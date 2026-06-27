@@ -1,0 +1,484 @@
+Você é um assistente técnico da Maximos Lab.
+
+Crie uma área de documentação operacional dentro deste repositório com runbooks completos para publicação, configuração e entrega de projetos da Maximos Lab.
+
+OBJETIVO
+
+Criar uma wiki interna em Markdown para padronizar a publicação de projetos usando:
+
+- Registro.br
+- Cloudflare
+- GitHub Pages
+- SEO técnico
+- Google Analytics
+- Google Search Console
+- Google Tag Manager
+- Meta Pixel
+- Microsoft Clarity
+- Lighthouse
+- Entrega ao cliente
+
+ESTRUTURA DE PASTAS
+
+Crie a seguinte estrutura:
+
+/docs/
+├── README.md
+├── runbooks/
+│   ├── 01-registro-br.md
+│   ├── 02-cloudflare.md
+│   ├── 03-github-pages.md
+│   ├── 04-dns-dominios.md
+│   ├── 05-seo-tecnico.md
+│   ├── 06-google-analytics.md
+│   ├── 07-google-search-console.md
+│   ├── 08-google-tag-manager.md
+│   ├── 09-meta-pixel.md
+│   ├── 10-microsoft-clarity.md
+│   ├── 11-performance-lighthouse.md
+│   ├── 12-publicacao-final.md
+│   └── 13-entrega-cliente.md
+└── checklists/
+    ├── checklist-publicacao.md
+    ├── checklist-seo.md
+    ├── checklist-performance.md
+    └── checklist-entrega-cliente.md
+
+REGRAS GERAIS
+
+- Escrever tudo em português do Brasil.
+- Usar Markdown limpo.
+- Usar linguagem prática e operacional.
+- Cada runbook deve ter passo a passo numerado.
+- Cada runbook deve ter checklist final.
+- Cada runbook deve ter seção “Problemas comuns”.
+- Cada runbook deve ter seção “Como validar”.
+- Não usar linguagem genérica demais.
+- Criar documentos úteis para uso real da Maximos Lab.
+- Não adicionar dados sensíveis.
+- Não adicionar credenciais.
+- Não adicionar tokens.
+- Não adicionar informações privadas.
+
+PADRÃO DE CADA RUNBOOK
+
+Cada arquivo em /docs/runbooks deve seguir esta estrutura:
+
+# Título do Runbook
+
+## Objetivo
+
+Explique para que serve este runbook.
+
+## Quando usar
+
+Explique em quais tipos de projeto esse runbook se aplica.
+
+## Pré-requisitos
+
+Liste o que precisa estar pronto antes de começar.
+
+## Passo a passo
+
+Liste os passos com clareza.
+
+## Como validar
+
+Explique como confirmar que a configuração funcionou.
+
+## Problemas comuns
+
+Liste erros comuns e como resolver.
+
+## Checklist final
+
+Use checklist com caixas:
+- [ ] Item
+
+---
+
+CONTEÚDO ESPERADO POR ARQUIVO
+
+1. /docs/README.md
+
+Criar uma página inicial da documentação com:
+
+- O que é a documentação operacional da Maximos Lab
+- Como usar os runbooks
+- Ordem recomendada de publicação
+- Links para todos os runbooks
+- Links para todos os checklists
+
+Incluir ordem sugerida:
+
+1. Registro.br
+2. Cloudflare
+3. GitHub Pages
+4. DNS e domínio
+5. SEO técnico
+6. Analytics e monitoramento
+7. Performance
+8. Publicação final
+9. Entrega ao cliente
+
+---
+
+2. /docs/runbooks/01-registro-br.md
+
+Criar runbook para registro e administração de domínio.
+
+Incluir:
+
+- Quando registrar domínio no CPF/CNPJ do cliente
+- Por que o domínio deve estar no nome do cliente
+- Como comprar domínio
+- Como alterar nameservers
+- Como verificar titularidade
+- Como lidar com provedor de serviços
+- Explicar que remover provedor de serviços não altera DNS nem hospedagem, mas pode afetar administração da titularidade
+- Problema comum: CPF vinculado a NEWFOLD/HostGator impedindo registro direto
+- Como resolver: verificar titularidade e remover/alterar provedor se necessário
+- Checklist final
+
+---
+
+3. /docs/runbooks/02-cloudflare.md
+
+Criar runbook para configuração inicial da Cloudflare.
+
+Incluir:
+
+- Criar conta
+- Adicionar domínio
+- Copiar nameservers
+- Alterar nameservers no Registro.br
+- Aguardar status Active
+- Configurar SSL/TLS como Full
+- Ativar Always Use HTTPS
+- Ativar Automatic HTTPS Rewrites
+- Ativar Brotli
+- Ativar HTTP/3
+- Ativar Early Hints
+- Avaliar Auto Minify
+- Explicar quando deixar DNS Only e quando usar Proxied
+- Recomendar DNS Only para validação inicial do GitHub Pages
+- Checklist final
+
+---
+
+4. /docs/runbooks/03-github-pages.md
+
+Criar runbook para publicar site no GitHub Pages.
+
+Incluir:
+
+- Criar repositório
+- Subir arquivos
+- Configurar branch
+- Ativar Pages
+- Configurar domínio customizado
+- Explicar arquivo CNAME
+- Ativar Enforce HTTPS
+- Aguardar DNS Check Success
+- Problemas comuns:
+  - DNS Check in Progress
+  - Enforce HTTPS indisponível
+  - Cloudflare Proxied atrapalhando validação
+- Como validar publicação
+- Checklist final
+
+---
+
+5. /docs/runbooks/04-dns-dominios.md
+
+Criar runbook específico para DNS.
+
+Incluir:
+
+- Configuração para domínio apex
+- Configuração para www
+- Configuração para subdomínios
+- GitHub Pages com registros A:
+
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+
+- GitHub Pages com CNAME:
+
+usuario.github.io
+
+- Exemplo:
+
+@ -> A -> IPs GitHub
+www -> CNAME -> usuario.github.io
+imersao -> CNAME -> usuario.github.io
+links -> CNAME -> usuario.github.io
+
+- Explicar DNS Only vs Proxied
+- Explicar propagação DNS
+- Checklist final
+
+---
+
+6. /docs/runbooks/05-seo-tecnico.md
+
+Criar runbook de SEO técnico básico.
+
+Incluir:
+
+- Title
+- Meta Description
+- Canonical
+- Open Graph
+- Twitter Card
+- Favicon
+- Theme Color
+- Alt em imagens
+- Robots.txt
+- Sitemap.xml
+
+Explicar quando criar sitemap:
+
+- Landing page simples: opcional
+- Site multipágina: obrigatório/recomendado
+
+Incluir template HTML:
+
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<link rel="canonical" href="{{URL}}">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:image" content="{{OG_IMAGE}}">
+<meta property="og:url" content="{{URL}}">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.ico">
+
+Incluir checklist final.
+
+---
+
+7. /docs/runbooks/06-google-analytics.md
+
+Criar runbook para Google Analytics 4.
+
+Incluir:
+
+- Quando usar
+- Criar conta/propriedade
+- Criar Web Stream
+- Copiar Measurement ID G-XXXXXXXXXX
+- Inserir script no site
+- Alternativa via Google Tag Manager
+- Como validar em Realtime
+- Problemas comuns
+- Checklist final
+
+---
+
+8. /docs/runbooks/07-google-search-console.md
+
+Criar runbook para Search Console.
+
+Incluir:
+
+- Quando usar
+- Diferença entre propriedade Domínio e Prefixo de URL
+- Recomendar propriedade Domínio
+- Verificação por TXT no DNS da Cloudflare
+- Envio de sitemap
+- Solicitação de indexação
+- Como validar
+- Problemas comuns
+- Checklist final
+
+---
+
+9. /docs/runbooks/08-google-tag-manager.md
+
+Criar runbook para GTM.
+
+Incluir:
+
+- Quando usar
+- Criar conta
+- Criar container Web
+- Inserir código no head e body
+- Publicar container
+- Testar Preview
+- Usar GTM para Analytics e Pixel quando fizer sentido
+- Checklist final
+
+---
+
+10. /docs/runbooks/09-meta-pixel.md
+
+Criar runbook para Meta Pixel.
+
+Incluir:
+
+- Quando usar
+- Criar Pixel no Gerenciador de Eventos
+- Instalar manualmente ou via GTM
+- Evento PageView
+- Evento Lead
+- Testar com Meta Pixel Helper
+- Avisar que deve ser usado quando cliente pretende anunciar
+- Checklist final
+
+---
+
+11. /docs/runbooks/10-microsoft-clarity.md
+
+Criar runbook para Microsoft Clarity.
+
+Incluir:
+
+- Quando usar
+- Criar projeto
+- Copiar script
+- Inserir no site
+- Validar gravações
+- Ver heatmaps
+- Cuidados com privacidade
+- Checklist final
+
+---
+
+12. /docs/runbooks/11-performance-lighthouse.md
+
+Criar runbook para performance.
+
+Incluir:
+
+- Como rodar Lighthouse no Chrome
+- Métricas principais:
+  - Performance
+  - Accessibility
+  - Best Practices
+  - SEO
+- Objetivo Maximos Lab:
+  - Performance acima de 90
+  - Accessibility acima de 95
+  - SEO acima de 95
+- Otimização de imagens
+- WebP
+- Lazy loading
+- CSS simples
+- Evitar scripts desnecessários
+- Problemas comuns
+- Checklist final
+
+---
+
+13. /docs/runbooks/12-publicacao-final.md
+
+Criar runbook final antes de publicar.
+
+Incluir:
+
+- Conferir links
+- Conferir WhatsApp
+- Conferir formulários
+- Conferir imagens
+- Conferir SEO
+- Conferir Open Graph no WhatsApp
+- Conferir favicon
+- Conferir responsividade
+- Conferir domínio
+- Conferir HTTPS
+- Conferir Analytics/Pixel/Clarity se contratados
+- Checklist final
+
+---
+
+14. /docs/runbooks/13-entrega-cliente.md
+
+Criar runbook para entrega ao cliente.
+
+Incluir:
+
+- Confirmar aprovação final
+- Emitir recibo
+- Enviar links finais
+- Informar domínio publicado
+- Informar prazo de garantia
+- Explicar o que está incluso e não incluso após entrega
+- Entregar acessos quando aplicável
+- Arquivar projeto
+- Registrar no Notion/CRM
+- Checklist final
+
+---
+
+CHECKLISTS
+
+Criar os arquivos em /docs/checklists:
+
+1. checklist-publicacao.md
+
+Checklist geral de publicação com seções:
+- GitHub
+- Cloudflare
+- DNS
+- SEO
+- Performance
+- Testes
+- Entrega
+
+2. checklist-seo.md
+
+Checklist SEO com:
+- Title
+- Meta description
+- Canonical
+- Open Graph
+- Twitter Card
+- Favicon
+- Alt
+- Sitemap
+- Robots
+- Search Console
+
+3. checklist-performance.md
+
+Checklist performance:
+- WebP
+- Lazy loading
+- CSS limpo
+- JS mínimo
+- Lighthouse
+- Mobile
+- Compressão
+- Cache
+
+4. checklist-entrega-cliente.md
+
+Checklist entrega:
+- Site aprovado
+- Domínio ativo
+- HTTPS ativo
+- Pagamento final recebido
+- Recibo emitido
+- Links enviados
+- Garantia informada
+- Projeto arquivado
+
+TOM E ESTILO
+
+Os documentos devem parecer manuais internos profissionais.
+
+Escreva como se um novo colaborador da Maximos Lab fosse seguir esses runbooks sem precisar perguntar nada.
+
+ENTREGA FINAL
+
+Ao final:
+
+- Criar todos os arquivos.
+- Garantir links internos entre README.md e runbooks.
+- Garantir que todos os checklists foram criados.
+- Não apagar arquivos existentes do projeto.
+- Não alterar o site público, exceto se necessário para linkar a documentação.

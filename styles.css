@@ -678,6 +678,8 @@ textarea:focus {
 
 .site-footer {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
   justify-content: center;
   align-items: center;
   padding: 34px clamp(20px, 5vw, 72px);
@@ -692,6 +694,16 @@ textarea:focus {
   height: 94px;
   object-fit: contain;
   object-position: center;
+}
+
+.footer-privacy {
+  color: rgba(246, 248, 251, 0.68);
+  font-size: 0.86rem;
+  text-decoration: none;
+}
+
+.footer-privacy:hover {
+  color: #ffffff;
 }
 
 .back-to-top {
