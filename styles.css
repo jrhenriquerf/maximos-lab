@@ -519,6 +519,7 @@ h3 {
 .portfolio-grid {
   display: grid;
   grid-template-columns: minmax(0, 980px);
+  gap: 28px;
 }
 
 .project-card {
@@ -557,6 +558,7 @@ h3 {
 .project-shot img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   object-position: top center;
@@ -571,6 +573,7 @@ h3 {
   color: #dce7ef;
   padding: 0 14px;
   font-size: 0.78rem;
+  overflow-wrap: anywhere;
   font-weight: 760;
 }
 
