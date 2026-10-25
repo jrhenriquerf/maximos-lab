@@ -188,7 +188,7 @@ contactForm?.addEventListener("submit", (event) => {
     `Nome: ${name}\nE-mail: ${email}\nTipo de projeto: ${project}\n\nMensagem:\n${message}`,
   );
 
-  window.location.href = `mailto:contato@maximoslab.com.br?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:contato.maximoslab@gmail.com?subject=${subject}&body=${body}`;
   formStatus.textContent = "Mensagem preparada. Confirme o envio no seu aplicativo de e-mail.";
 });
 
