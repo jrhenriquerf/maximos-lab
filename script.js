@@ -6,6 +6,8 @@ const hero = document.querySelector(".hero");
 const glow = document.querySelector(".cursor-glow");
 const canvas = document.querySelector("#hero-canvas");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const precisePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+document.documentElement.classList.add("is-enhanced");
 
 if (window.lucide) {
   window.lucide.createIcons();
@@ -42,6 +44,7 @@ function resetParallax() {
 }
 
 function updatePointer(event) {
+  if (reduceMotion.matches || !precisePointer.matches) return;
   pointer.x = event.clientX;
   pointer.y = event.clientY;
   pointer.active = heroIsVisible();
@@ -66,10 +69,65 @@ function updatePointer(event) {
 }
 
 window.addEventListener("pointermove", updatePointer);
-window.addEventListener("scroll", () => {
-  pointer.active = heroIsVisible();
+const header = document.querySelector(".site-header");
+const backToTop = document.querySelector(".back-to-top");
+let scrollFrame = 0;
+function updateScrollState() {
+  scrollFrame = 0;
+  header?.classList.toggle("is-compact", window.scrollY > 64);
+  backToTop?.classList.toggle("is-visible", window.scrollY > 600);
+  pointer.active = !reduceMotion.matches && precisePointer.matches && heroIsVisible();
   if (!pointer.active) resetParallax();
+}
+window.addEventListener("scroll", () => {
+  if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollState);
 }, { passive: true });
+window.addEventListener("pageshow", updateScrollState);
+updateScrollState();
+reduceMotion.addEventListener("change", updateScrollState);
+precisePointer.addEventListener("change", updateScrollState);
+
+// Only off-screen content receives a hidden starting state. Without JS it stays visible.
+function bootScrollReveals() {
+  if (!("IntersectionObserver" in window) || reduceMotion.matches) return;
+  const targets = document.querySelectorAll(
+    ".about .section-heading, .about-copy, .services .section-heading, .process .section-heading, " +
+    ".service-card, .process-card, .portfolio-heading, .project-card, .portfolio-invitation, " +
+    ".contact .section-heading, .contact-form"
+  );
+  const reveal = element => {
+    element.classList.remove("reveal-pending");
+    observer.unobserve(element);
+  };
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) reveal(entry.target); });
+  }, { rootMargin: "0px 0px -36px 0px", threshold: 0 });
+
+  targets.forEach(element => {
+    const rect = element.getBoundingClientRect();
+    // Content already seen, focus targets and restored scroll positions must stay visible.
+    if (rect.top < window.innerHeight || element.contains(document.activeElement)) return;
+    element.dataset.reveal = "";
+    if (element.matches(".service-card, .process-card, .project-card")) {
+      const index = Array.from(element.parentElement.children).indexOf(element);
+      element.style.setProperty("--reveal-delay", precisePointer.matches ? Math.min(index, 2) * 90 + "ms" : "0ms");
+    }
+    element.classList.add("reveal-pending");
+    observer.observe(element);
+  });
+  document.addEventListener("focusin", event => {
+    const element = event.target.closest?.("[data-reveal]");
+    if (element) reveal(element);
+  });
+  reduceMotion.addEventListener("change", () => {
+    if (!reduceMotion.matches) return;
+    targets.forEach(reveal);
+    observer.disconnect();
+  });
+  // Printing or searching the page should never leave content transparent.
+  window.addEventListener("beforeprint", () => targets.forEach(reveal));
+}
+bootScrollReveals();
 
 document.querySelectorAll('a[href="#topo"]').forEach((link) => {
   link.addEventListener("click", (event) => {
@@ -81,13 +139,15 @@ document.querySelectorAll('a[href="#topo"]').forEach((link) => {
 });
 
 function bootHeroCanvas() {
-  if (!canvas || reduceMotion.matches) return;
+  if (!canvas) return;
 
   const context = canvas.getContext("2d");
+  if (!context) return;
   const particles = [];
   let width = 0;
   let height = 0;
   let animationFrame = 0;
+  let onScreen = heroIsVisible();
 
   function resize() {
     const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -97,7 +157,7 @@ function bootHeroCanvas() {
     canvas.height = Math.floor(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-    const targetCount = Math.max(42, Math.min(92, Math.floor(width / 18)));
+    const targetCount = Math.max(24, Math.min(60, Math.floor(width / 24)));
     particles.length = 0;
 
     for (let index = 0; index < targetCount; index += 1) {
@@ -121,6 +181,8 @@ function bootHeroCanvas() {
   }
 
   function tick() {
+    animationFrame = 0;
+    if (reduceMotion.matches || document.hidden || !onScreen) return;
     context.clearRect(0, 0, width, height);
 
     particles.forEach((particle, index) => {
@@ -145,8 +207,8 @@ function bootHeroCanvas() {
       for (let next = index + 1; next < particles.length; next += 1) {
         const other = particles[next];
         const distance = Math.hypot(particle.x - other.x, particle.y - other.y);
-        if (distance < 128) {
-          drawLine(particle, other, 0.13 * (1 - distance / 128));
+        if (distance < 108) {
+          drawLine(particle, other, 0.10 * (1 - distance / 108));
         }
       }
 
@@ -159,18 +221,31 @@ function bootHeroCanvas() {
     animationFrame = requestAnimationFrame(tick);
   }
 
-  resize();
-  tick();
-  window.addEventListener("resize", resize);
-
-  reduceMotion.addEventListener("change", () => {
+  function syncAnimation() {
     cancelAnimationFrame(animationFrame);
-    context.clearRect(0, 0, width, height);
-    if (!reduceMotion.matches) {
-      resize();
-      tick();
+    animationFrame = 0;
+    if (!reduceMotion.matches && !document.hidden && onScreen) {
+      animationFrame = requestAnimationFrame(tick);
+    } else {
+      context.clearRect(0, 0, width, height);
     }
-  });
+  }
+  resize();
+  syncAnimation();
+  window.addEventListener("resize", () => { resize(); syncAnimation(); });
+  document.addEventListener("visibilitychange", syncAnimation);
+  reduceMotion.addEventListener("change", syncAnimation);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(entries => {
+      onScreen = entries[0].isIntersecting;
+      syncAnimation();
+    }).observe(hero);
+  } else {
+    window.addEventListener("scroll", () => {
+      const visible = heroIsVisible();
+      if (visible !== onScreen) { onScreen = visible; syncAnimation(); }
+    }, { passive: true });
+  }
 }
 
 bootHeroCanvas();

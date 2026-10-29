@@ -29,7 +29,7 @@
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link rel="apple-touch-icon" href="assets/favicon.png" />
     <link rel="preload" href="assets/hero-maximos-lab.png" as="image" />
-    <link rel="stylesheet" href="styles.css?v=simples-20261029b" />
+    <link rel="stylesheet" href="styles.css?v=motion-20261029" />
   </head>
   <body>
     <div class="top-anchor" id="topo" aria-hidden="true"></div>
@@ -53,7 +53,7 @@
 
     <main>
       <section class="hero" aria-labelledby="hero-title">
-        <img class="hero-image" src="assets/hero-maximos-lab.png" alt="" />
+        <img class="hero-image" fetchpriority="high" decoding="async" src="assets/hero-maximos-lab.png" alt="" />
         <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
         <div class="cursor-glow" aria-hidden="true"></div>
         <div class="hero-overlay"></div>
@@ -213,7 +213,7 @@
     </main>
 
     <footer class="site-footer">
-      <img class="footer-logo" src="assets/logo.png" alt="Maximos Lab" />
+      <img class="footer-logo" loading="lazy" decoding="async" src="assets/logo.png" alt="Maximos Lab" />
       <a class="footer-privacy" href="politica-de-privacidade.html">Pol&iacute;tica de Privacidade</a>
     </footer>
 
@@ -222,7 +222,7 @@
     </a>
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script src="script.js?v=gmail-20261025"></script>
+    <script src="script.js?v=motion-20261029"></script>
   </body>
 </html>
 
